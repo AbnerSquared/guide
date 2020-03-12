@@ -4,7 +4,8 @@ namespace Guide.Services
     {
         public ServicesBootstrapper(
             WelcomeMessageService welcomeMessageService,
-            UsernameService usernameService
+            UsernameService usernameService,
+            VoiceChatService voiceChatService
             )
         {
             // initialize a service if needed...

@@ -43,6 +43,7 @@ namespace Guide
                 c.ForSingletonOf<IJsonStorage>().UseIfNone<JsonStorage>();
                 c.ForSingletonOf<ILanguage>().UseIfNone<JsonLanguage>();
                 c.ForSingletonOf<WelcomeMessageService>().UseIfNone<WelcomeMessageService>();
+                c.ForSingletonOf<VoiceChatService>().UseIfNone<VoiceChatService>();
                 c.ForSingletonOf<DiscordSocketClient>().UseIfNone(DiscordSocketClientFactory.GetDefault());
             });
         }
