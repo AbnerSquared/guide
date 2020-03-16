@@ -1,5 +1,4 @@
 ﻿using Discord.WebSocket;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,7 +16,9 @@ namespace Guide.Services
 
         private async Task OnUserVoiceStateUpdated(SocketUser user, SocketVoiceState previous, SocketVoiceState current)
         {
-            var guildUser = (user as SocketGuildUser);
+            if (!(user is SocketGuildUser guildUser))
+                return;
+
             var voiceChannel = current.VoiceChannel ?? previous.VoiceChannel;
 
             if (voiceChannel.Guild.Id != Constants.TutorialGuildId)
@@ -30,19 +31,13 @@ namespace Guide.Services
 
             bool hasRole = guildUser.Roles.Any(x => x.Id == Constants.VoiceChatRoleId);
 
-            if (current.VoiceChannel?.Id == Constants.VoiceChannelId)
+            if (current.VoiceChannel?.Id == Constants.VoiceChannelId && !hasRole)
             {
-                if (!hasRole)
-                {
-                    await guildUser.AddRoleAsync(role);
-                }
+                await guildUser.AddRoleAsync(role);
             }
-            else if (previous.VoiceChannel?.Id == Constants.VoiceChannelId)
+            else if (previous.VoiceChannel?.Id == Constants.VoiceChannelId && hasRole)
             {
-                if (hasRole)
-                {
-                    await guildUser.RemoveRoleAsync(role);
-                }
+                await guildUser.RemoveRoleAsync(role);
             }
         }
     }
